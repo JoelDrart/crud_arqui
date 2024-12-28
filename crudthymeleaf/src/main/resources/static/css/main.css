@@ -7,7 +7,7 @@ body {
 /*--- navigation bar ---*/
 
 .navbar {
-  background:#18223b;
+  background: #18223b;
 }
 
 .nav-link {
@@ -19,7 +19,6 @@ body {
   margin-right: 1em;
 }
 
-
 .nav-link:hover {
   color: #f6e0b5;
 }
@@ -29,11 +28,12 @@ body {
 }
 
 .header {
-  background-image: url('../images/background.jpg');
   background-image: url('https://th.bing.com/th/id/R.814d79182cf5b9a5584d46adc5ddbb49?rik=c7PWdP8bIYxseA&pid=ImgRaw&r=0');
   background-size: cover;
   background-position: center;
+  background-attachment: fixed; /* Mantiene la imagen fija */
   position: relative;
+  min-height: 100vh; /* Asegura que ocupe toda la ventana */
 }
 
 .overlay {
