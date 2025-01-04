@@ -27,7 +27,8 @@
     </div>
 </nav>
 
-<header class="min-h-screen flex items-center justify-center">
+<main class="bg-black bg-opacity-75 h-screen pt-24 flex items-center justify-center">
+
     <div class="bg-amber-950/25  text-white shadow-md rounded px-8 pt-6 pb-8 w-full max-w-sm">
         <div th:if="${param.error}" class="text-red-500 text-sm mb-4">
             Invalid username and password.
@@ -50,6 +51,7 @@
             </div>
         </form>
     </div>
-</header>
+
+</main>
 </body>
 </html>

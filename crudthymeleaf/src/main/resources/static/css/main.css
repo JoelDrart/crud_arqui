@@ -9,6 +9,11 @@ body {
   position: relative;
 }
 
+/* Eliminar espacio adicional sobre el navbar */
+nav {
+  margin-top: 0;
+}
+
 
 /*--- navigation bar ---*/
 
