@@ -1,68 +1,62 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
 <head>
     <title>KWA!</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
+<body >
 
-<body>
-<nav class="navbar navbar-expand-md">
-    <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#main-navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="main-navigation">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="/recetas/list">Ver recetas</a>
+<!-- Navbar -->
+<nav class="bg-slate-900 fixed w-full z-10">
+    <div class="container mx-auto flex justify-between items-center py-4 px-4">
+        <div>
+            <span class="text-amber-200 text-lg font-bold">KWA!</span>
+        </div>
+        <ul class="flex space-x-6">
+            <li><a href="/recetas/list" class="text-white hover:text-yellow-300">Ver recetas</a></li>
+            <li><a href="/recetas/about" class="text-white hover:text-yellow-300">Acerca de</a></li>
+            <!-- Enlace para login solo cuando el usuario no está autenticado -->
+            <li th:unless="${#authorization.expression('isAuthenticated()')}">
+                <a href="/recetas/login" class="text-white hover:text-yellow-300">Iniciar sesión</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Acerca de</a>
+            <!-- Enlace para logout solo cuando el usuario está autenticado -->
+            <li sec:authorize="isAuthenticated()">
+                <a href="/recetas/logout" class="text-white hover:text-yellow-300">Cerrar sesión</a>
             </li>
-            <div th:unless="${#authorization.expression('isAuthenticated()')}">
-                <li class="nav-item">
-                    <a class="nav-link" href="/recetas/login">Iniciar sesión</a>
-                </li>
-            </div>
-            <div sec:authorize="isAuthenticated()">
-                <li class="nav-item">
-                    <a class="nav-link" href="/recetas/logout">Cerrar sesión</a>
-                </li>
-            </div>
         </ul>
     </div>
 </nav>
 
-<header class="page-header header container-fluid">
-    <div class="overlay">
-        <div class="description text-center text-white py-5">
-            <h1>Bienvenido a Recetas con KWA!</h1>
-            <p>En este sitio encontrarás recetas de cocina ecuatoriana y podrás saber cómo hacerlas paso a paso.</p>
-        </div>
-    </div>
-</header>
+<main class="bg-black bg-opacity-50 h-screen" >
 
-<div class="container my-5">
-    <h1 class="text-center mb-4">Recetas</h1>
-    <div class="row row-cols-4 row-cols-md-3 g-4">
-        <div class="col" th:each="receta : ${recipes}">
-            <div class="card h-100">
-                <img th:src="@{/pic/{id}(id=${receta.foto}+.jpg)}" class="card-img-top" alt="Imagen de la receta">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${receta.nombre}"></h5>
-                    <p class="card-text"><strong>Autor:</strong> <span th:text="${receta.autor}"></span></p>
-                    <p class="card-text"><strong>Dificultad:</strong> <span th:text="${receta.dificultad}"></span></p>
-                </div>
+<!-- Header -->
+<div class="flex items-center justify-center pt-20">
+    <div class="text-center text-amber-200">
+        <h1 class="text-5xl font-bold mb-4">Bienvenido a Recetas con KWA!</h1>
+        <p class="text-lg">En este sitio encontrarás recetas de cocina ecuatoriana y podrás saber cómo hacerlas paso a paso.</p>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container mx-auto my-16 px-4">
+    <h1 class="text-5xl font-bold text-center mb-8">Recetas</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Iterar sobre la lista de recetas usando Thymeleaf -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden" th:each="receta : ${recipes}">
+            <!-- Enlace a la imagen de la receta -->
+            <img th:src="@{/pic/{id}.jpg(id=${receta.foto})}" class="w-full h-48 object-cover" alt="Imagen de la receta">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold mb-2" th:text="${receta.nombre}"></h2>
+                <p class="text-sm text-gray-600"><strong>Autor:</strong> <span th:text="${receta.autor}"></span></p>
+                <p class="text-sm text-gray-600"><strong>Dificultad:</strong> <span th:text="${receta.dificultad}"></span></p>
             </div>
         </div>
     </div>
 </div>
+</main>
 
-<!-- Scripts -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
-<script src="/js/main.js"></script>
 </body>
 </html>

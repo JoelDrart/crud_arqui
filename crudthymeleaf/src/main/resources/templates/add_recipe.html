@@ -6,108 +6,90 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>KWA!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-    <!-- <link rel="stylesheet" href="../css/shards.min.css"> -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 
 <body>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<script src="/js/main.js"></script>
-<nav class="navbar navbar-expand-md">
-  <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#main-navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="main-navigation">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="/recetas/">Inicio</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/recetas/list">Ver recetas</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Acerca de</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/recetas/logout">Cerrar sesión</a>
-      </li>
-    </ul>
-  </div>
+<nav class="bg-slate-900 fixed w-full z-10">
+    <div class="container mx-auto flex justify-between items-center py-4 px-4">
+        <div>
+            <span class="text-amber-200 text-lg font-bold">KWA!</span>
+        </div>
+        <ul class="flex space-x-6">
+            <li><a href="/recetas/" class="hover:text-amber-400">Inicio</a></li>
+            <li><a href="/recetas/list" class="text-white hover:text-yellow-300">Ver recetas</a></li>
+            <li><a href="/recetas/about" class="text-white hover:text-yellow-300">Acerca de</a></li>
+            <li th:unless="${#authorization.expression('isAuthenticated()')}">
+                <a href="/recetas/login" class="text-white hover:text-yellow-300">Iniciar sesión</a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a href="/recetas/logout" class="text-white hover:text-yellow-300">Cerrar sesión</a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
-<header class="page-header header container-fluid">
-<div class="overlay">
+<header class="bg-gray-900 text-white py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold">Agregar Receta</h1>
+    </div>
+</header>
 
-    <div class="container my-5">
-       <!-- <h3> Add recipe</h3> -->
-       <div class="row">
-        <div class="col-sm-3"></div>
-        
-        <div class="col-sm-6">
-        <div class="card-transparent">
-            <div class="card-body rounded" style="background-color: rgba(0, 0, 0, 0.4); ">
-				<form action="#" th:action="@{/recetas/add}" th:object="${receta}" method="post" enctype="multipart/form-data">
-				    <div class="row">
-				        <div class="form-group col-md-12">
-				            <label for="nombre" class="col-form-label">Nombre</label>
-				            <input type="text" th:field="*{nombre}" class="form-control" id="nombre" placeholder="Nombre">
-				        </div>
+<main class="py-10">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white shadow rounded-lg p-6">
+            <form action="#" th:action="@{/recetas/add}" th:object="${receta}" method="post" enctype="multipart/form-data">
+                <div class="grid grid-cols-1 gap-6">
 
-				        <div class="form-group col-md-12">
-				            <label for="name" class="col-form-label">Subir foto</label>
-				            <input type="file" name="file" accept="image/*" class="form-control"/>
-				        </div>
+                    <div>
+                        <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+                        <input type="text" th:field="*{nombre}" id="nombre" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Nombre">
+                    </div>
 
-				        <div class="form-group col-md-12">
-				            <label for="preparacion" class="col-form-label">Preparación</label>
-				            <textarea class="form-control" th:field="*{preparacion}" id="preparacion" rows="3" placeholder="Preparación"></textarea>
-				        </div>
+                    <div>
+                        <label for="file" class="block text-sm font-medium text-gray-700">Subir foto</label>
+                        <input type="file" name="file" id="file" accept="image/*" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm">
+                    </div>
 
-				        <div class="form-group col-md-12">
-				            <label for="dificultad" class="col-form-label">Dificultad</label>
-				            <select class="form-control" id="dificultad" th:field="*{dificultad}">
-				                <option value="Fácil">Fácil</option>
-				                <option value="Moderado">Moderado</option>
-				                <option value="Difícil">Difícil</option>
-				            </select>
-				        </div>
+                    <div>
+                        <label for="preparacion" class="block text-sm font-medium text-gray-700">Preparación</label>
+                        <textarea id="preparacion" th:field="*{preparacion}" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Preparación"></textarea>
+                    </div>
 
-				        <!-- Nuevo Campo: Autor -->
-				        <div class="form-group col-md-12">
-				            <label for="autor" class="col-form-label">Autor</label>
-				            <input type="text" th:field="*{autor}" class="form-control" id="autor" placeholder="Nombre del autor">
-				        </div>
+                    <div>
+                        <label for="dificultad" class="block text-sm font-medium text-gray-700">Dificultad</label>
+                        <select id="dificultad" th:field="*{dificultad}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <option value="Fácil">Fácil</option>
+                            <option value="Moderado">Moderado</option>
+                            <option value="Difícil">Difícil</option>
+                        </select>
+                    </div>
 
-				        <!-- Nuevo Campo: Teléfono -->
-				        <div class="form-group col-md-12">
-				            <label for="telefono" class="col-form-label">Teléfono</label>
-				            <input type="tel" th:field="*{telefono}" class="form-control" id="telefono" placeholder="Número de teléfono">
-				        </div>
+                    <div>
+                        <label for="autor" class="block text-sm font-medium text-gray-700">Autor</label>
+                        <input type="text" th:field="*{autor}" id="autor" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Nombre del autor">
+                    </div>
 
-				        <!-- Nuevo Campo: Correo Electrónico -->
-				        <div class="form-group col-md-12">
-				            <label for="correo" class="col-form-label">Correo Electrónico</label>
-				            <input type="email" th:field="*{correo}" class="form-control" id="correo" placeholder="Correo electrónico">
-				        </div>
+                    <div>
+                        <label for="telefono" class="block text-sm font-medium text-gray-700">Teléfono</label>
+                        <input type="tel" th:field="*{telefono}" id="telefono" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Número de teléfono">
+                    </div>
 
-				        <div class="form-group col-md-6">
-				            <input type="submit" class="btn btn-primary" value="Guardar receta">
-				        </div>
-				    </div>
-				</form>
+                    <div>
+                        <label for="correo" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+                        <input type="email" th:field="*{correo}" id="correo" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Correo electrónico">
+                    </div>
 
-              
-            </div>
+                    <div>
+                        <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Guardar receta</button>
+                    </div>
+
+                </div>
+            </form>
         </div>
     </div>
-    <div class="col-sm-3"></div>
-   </div>
-   </div> 
-</div>
-</header>    
+</main>
 </body>
 
 </html>

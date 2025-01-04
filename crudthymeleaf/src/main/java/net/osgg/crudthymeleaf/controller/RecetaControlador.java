@@ -35,6 +35,11 @@ public class RecetaControlador {
 		model.addAttribute("recipes", repo.findAll());
 		return "index";
 	 }
+
+	@GetMapping("/about")
+	public String showAboutPage() {
+		return "about";
+	}
 	 
 	 @GetMapping("/add_recipe")
 	 public String showSignUpForm(Receta receta) {

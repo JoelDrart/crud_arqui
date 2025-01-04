@@ -2,75 +2,81 @@ body {
   padding: 0;
   margin: 0;
   background: #f2f6e9;
-}
-
-/*--- navigation bar ---*/
-
-.navbar {
-  background: #18223b;
-}
-
-.nav-link {
-  color: #fff;
-  cursor: pointer;
-}
-
-.nav-link {
-  margin-right: 1em;
-}
-
-.nav-link:hover {
-  color: #f6e0b5;
-}
-
-.navbar-collapse {
-  justify-content: flex-end;
-}
-
-.header {
   background-image: url('https://th.bing.com/th/id/R.814d79182cf5b9a5584d46adc5ddbb49?rik=c7PWdP8bIYxseA&pid=ImgRaw&r=0');
   background-size: cover;
   background-position: center;
   background-attachment: fixed; /* Mantiene la imagen fija */
   position: relative;
-  min-height: 100vh; /* Asegura que ocupe toda la ventana */
 }
 
-.overlay {
-  position: absolute;
-  min-height: 100%;
-  min-width: 100%;
-  left: 0;
-  top: 0;
-  background: rgba(0, 0, 0, 0.67);
-}
 
-.description {
-  left: 50%;
-  position: absolute;
-  top: 40%;
-  transform: translate(-50%, -55%);
-  text-align: center;
-}
+/*--- navigation bar ---*/
 
-.description h1 {
-  color: #f6e0b5;
-}
+/*.navbar {*/
+/*  background: #18223b;*/
+/*}*/
 
-.description p {
-  color: #f6e0b5;
-  font-size: 1.5rem;
-  line-height: 1.5;
-}
+/*.nav-link {*/
+/*  color: #fff;*/
+/*  cursor: pointer;*/
+/*}*/
 
-form label {
-  color: #f6e0b5;
-}
+/*.nav-link {*/
+/*  margin-right: 1em;*/
+/*}*/
 
-table th {
-  color: #f6e0b5;
-}
+/*.nav-link:hover {*/
+/*  color: #f6e0b5;*/
+/*}*/
 
-table td {
-  color: #f6e0b5;
-}
+/*.navbar-collapse {*/
+/*  justify-content: flex-end;*/
+/*}*/
+
+/*.header {*/
+/*  background-image: url('https://th.bing.com/th/id/R.814d79182cf5b9a5584d46adc5ddbb49?rik=c7PWdP8bIYxseA&pid=ImgRaw&r=0');*/
+/*  background-size: cover;*/
+/*  background-position: center;*/
+/*  background-attachment: fixed; !* Mantiene la imagen fija *!*/
+/*  position: relative;*/
+/*  min-height: 100vh; !* Asegura que ocupe toda la ventana *!*/
+/*}*/
+
+/*.overlay {*/
+/*  position: absolute;*/
+/*  min-height: 100%;*/
+/*  min-width: 100%;*/
+/*  left: 0;*/
+/*  top: 0;*/
+/*  background: rgba(0, 0, 0, 0.67);*/
+/*}*/
+
+/*.description {*/
+/*  left: 50%;*/
+/*  position: absolute;*/
+/*  top: 40%;*/
+/*  transform: translate(-50%, -55%);*/
+/*  text-align: center;*/
+/*}*/
+
+/*.description h1 {*/
+/*  color: #f6e0b5;*/
+/*}*/
+
+/*.description p {*/
+/*  color: #f6e0b5;*/
+/*  font-size: 1.5rem;*/
+/*  line-height: 1.5;*/
+/*}*/
+
+/*form label {*/
+/*  color: #f6e0b5;*/
+/*}*/
+
+/*table th {*/
+/*  color: #f6e0b5;*/
+/*}*/
+
+/*table td {*/
+/*  color: #f6e0b5;*/
+/*}*/
