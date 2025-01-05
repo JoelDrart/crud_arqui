@@ -51,7 +51,13 @@
                 <div class="p-4 flex justify-between">
                     <h2 class="text-lg font-bold mb-2 items-center" th:text="${receta.nombre}"></h2>
                     <div>
-                        <p class="text-sm text-gray-600 text-opacity-50"><span th:text="${receta.dificultad}"></span></p>
+                        <p class="text-sm text-opacity-50"
+                           th:classappend="${receta.dificultad} == 'Fácil' ? 'text-green-600' :
+                   (receta.dificultad == 'Moderado' ? 'text-orange-600' :
+                   (receta.dificultad == 'Difícil' ? 'text-red-600' : 'text-gray-600'))">
+                            <span th:text="${receta.dificultad}"></span>
+                        </p>
+
                         <p class="text-sm text-gray-600 italic"><span th:text="${receta.autor}"></span></p>
                     </div>
                 </div>
