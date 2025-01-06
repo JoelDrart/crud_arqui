@@ -8,7 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="https://cdn.tailwindcss.com"></script>
 	<link rel="stylesheet" type="text/css" href="/css/main.css">
-	<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" crossorigin="anonymous">
 </head>
 
 <body>
@@ -38,7 +38,7 @@
 	</div>
 </nav>
 
-<main class="bg-black bg-opacity-75 h-screen pt-24">
+<main class="bg-black bg-opacity-75 h-screen pt-24 overflow-y-scroll">
 
 	<div class="container mx-auto px-4">
 		<div class=" p-6 shadow-md rounded-md">
@@ -73,10 +73,11 @@
 							<td class="py-2 px-4">
 								<button
 										class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-3 rounded"
-										onclick="abrirModal('modalLong', '${receta.id}')">
+										th:onclick="@{'abrirModal(1,' + ${receta.id} + ')'}">
 									<i class="fas fa-glasses"></i>
 								</button>
 							</td>
+
 							<!-- Botón Editar (Solo si el usuario está autenticado) -->
 							<td class="py-2 px-4" sec:authorize="isAuthenticated()">
 								<a
@@ -90,67 +91,96 @@
 							<td class="py-2 px-4" sec:authorize="isAuthenticated()">
 								<button
 										class="bg-red-500 hover:bg-red-700 text-white py-1 px-3 rounded"
-										data-toggle="modal"
-										th:attr="data-target='#modal-warning' + ${receta.id}">
+										th:onclick="@{'abrirModal(2,' + ${receta.id} + ')'}">
 									<i class="fas fa-trash-alt"></i>
 								</button>
 							</td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
 
-	<!-- Modales -->
-	<!-- Modal para Ver Detalles -->
-	<div id="modalLong" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50">
-		<div class="bg-white rounded-lg shadow-md p-6 w-3/4 max-w-md">
-			<h2 class="text-lg font-bold text-gray-700 mb-4">Detalles de la Receta</h2>
-			<p id="detalle-receta" class="text-sm text-gray-600 mb-4">
-				<!-- Detalles cargados dinámicamente -->
-			</p>
-			<div class="flex justify-end">
-				<button onclick="cerrarModal('modalLong')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Cerrar</button>
-			</div>
-		</div>
-	</div>
+							<!-- Modales -->
+							<!-- Modal para Ver Detalles -->
+							<div id="modalLong" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50">
+								<div class="bg-white rounded-lg shadow-md p-6 w-3/4 max-w-md">
+									<div class="flex justify-between items-center">
+										<h2 class="text-lg font-bold text-gray-700">Detalles de la Receta</h2>
+										<button onclick="cerrarModal('modalLong')" class="text-gray-500 hover:text-red-700">&times;</button>
+									</div>
+									<hr class="my-4">
+									<p id="detalle-receta" class="text-sm text-gray-600 mb-4">
+										<!-- Detalles cargados dinámicamente -->
+									</p>
+									<div class="flex justify-end">
+										<button onclick="cerrarModal('modalLong')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Cerrar</button>
+									</div>
+								</div>
+							</div>
 
-	<!-- Modal para Confirmar Eliminación -->
-	<div id="modal-warning" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50">
-		<div class="bg-white rounded-lg shadow-md p-6 w-3/4 max-w-md">
-			<h2 class="text-lg font-bold text-gray-700 mb-4">Confirmar Eliminación</h2>
-			<p class="text-sm text-gray-600 mb-4">¿Estás seguro de que deseas eliminar esta receta?</p>
-			<div class="flex justify-end space-x-2">
-				<button onclick="cerrarModal('modal-warning')" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Cancelar</button>
-				<a id="confirmar-eliminar" href="#" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Eliminar</a>
-			</div>
-		</div>
-	</div>
+							<!-- Modal para Confirmar Eliminación -->
+							<div id="modal-warning" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50">
+								<div class="bg-white rounded-lg shadow-md p-6 w-3/4 max-w-md">
+									<div class="flex justify-between items-center">
+										<h2 class="text-lg font-bold text-gray-700">Confirmar Eliminación</h2>
+										<button onclick="cerrarModal('modal-warning')" class="text-gray-500 hover:text-red-700">&times;</button>
+									</div>
+									<hr class="my-4">
+									<p class="text-sm text-gray-600 mb-4">¿Estás seguro de que deseas eliminar esta receta?</p>
+									<div class="flex justify-end space-x-4">
+										<button onclick="cerrarModal('modal-warning')" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">Cancelar</button>
+										<a id="confirmar-eliminar" href="#" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Eliminar</a>
+									</div>
+								</div>
+							</div>
 
-</main>
+							<!-- JavaScript -->
+							<script>
+								function abrirModal(modalNumber, idReceta) {
+									let modalId;
 
+									// Mapear números a identificadores de modales
+									switch (modalNumber) {
+										case 1:
+											modalId = 'modalLong';
+											break;
+										case 2:
+											modalId = 'modal-warning';
+											break;
+										default:
+											console.error('Número de modal no válido');
+											return;
+									}
 
-<script>
-	function abrirModal(idModal, idReceta) {
-		const modal = document.getElementById(idModal);
-		modal.classList.remove('hidden');
+									const modal = document.getElementById(modalId);
+									modal.classList.remove('hidden');
 
-		if (idModal === 'modalLong') {
-			// Aquí puedes agregar lógica para cargar los detalles de la receta usando AJAX o Thymeleaf
-			document.getElementById('detalle-receta').innerText = `Detalles de la receta con ID: ${idReceta}`;
-		} else if (idModal === 'modal-warning') {
-			const eliminarEnlace = document.getElementById('confirmar-eliminar');
-			eliminarEnlace.href = `/recetas/delete/${idReceta}`;
-		}
-	}
+									if (modalId === 'modalLong') {
+										// Lógica para cargar detalles de la receta
+										fetch(`/recetas/details/${idReceta}`)
+												.then(response => response.json())
+												.then(data => {
+													const detalleReceta = document.getElementById('detalle-receta');
+													detalleReceta.innerHTML = `
+        <h4 class="font-bold">${data.nombre}</h4>
+        <img src="/pic/${data.foto}.jpg" alt="Imagen de la receta" class="w-full rounded mb-4">
+        <p><strong>Preparación:</strong> ${data.preparacion.replace(/\n/g, '<br>')}</p>
+        <p><strong>Dificultad:</strong> ${data.dificultad}</p>
+        <p><strong>Autor:</strong> ${data.autor}</p>
+        <p><strong>Teléfono:</strong> ${data.telefono}</p>
+        <p><strong>Correo:</strong> <a href="mailto:${data.correo}">${data.correo}</a></p>
+    `;
+												})
+												.catch(error => console.error('Error al cargar los detalles de la receta:', error));
+									} else if (modalId === 'modal-warning') {
+										// Configurar enlace de eliminación
+										const eliminarEnlace = document.getElementById('confirmar-eliminar');
+										eliminarEnlace.href = `/recetas/delete/${idReceta}`;
+									}
+								}
 
-	function cerrarModal(idModal) {
-		const modal = document.getElementById(idModal);
-		modal.classList.add('hidden');
-	}
-</script>
+								function cerrarModal(modalId) {
+									const modal = document.getElementById(modalId);
+									modal.classList.add('hidden');
+								}
+							</script>
+
 
 </body>
 </html>

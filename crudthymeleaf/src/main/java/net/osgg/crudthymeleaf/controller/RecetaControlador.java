@@ -3,15 +3,13 @@ package net.osgg.crudthymeleaf.controller;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -51,8 +49,36 @@ public class RecetaControlador {
 		 model.addAttribute("recipes", repo.findAll());
 	     return "list_recipes";
 	 }
-	 
-	 @RequestMapping("/login")
+
+	@GetMapping("/details/{id}")
+	@ResponseBody
+	public ResponseEntity<?> getRecipeDetails(@PathVariable("id") Long id) {
+		try {
+			java.util.Optional<Receta> receta = repo.findById(id);
+
+			if (receta.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Receta no encontrada");
+			}
+
+			var recetaDetalles = new RecetaDetallesDTO(
+					receta.get().getId(),
+					receta.get().getNombre(),
+					receta.get().getFoto() != null ? receta.get().getFoto().toString() : "",
+					receta.get().getPreparacion(),
+					receta.get().getDificultad(),
+					receta.get().getAutor(),
+					receta.get().getTelefono(),
+					receta.get().getCorreo()
+			);
+
+			return ResponseEntity.ok(recetaDetalles);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor");
+		}
+	}
+
+
+	@RequestMapping("/login")
 	 public String showLogin() {
 	     return "login";
 	 }
@@ -117,4 +143,6 @@ public class RecetaControlador {
 	     model.addAttribute("recipes", repo.findAll());
 	     return "list_recipes";
 	 }
+
+
 }
