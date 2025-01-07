@@ -14,8 +14,15 @@
 <nav class="bg-slate-900 fixed w-full z-10">
     <div class="container mx-auto flex justify-between items-center py-4 px-4">
         <div>
-            <span class="text-amber-200 text-lg font-bold">KWA!</span>
+            <a href="/recetas/"><span class="text-amber-200 text-lg font-bold">KWA!</span></a>
         </div>
+        <form action="/recetas/buscar" method="get" class="flex items-center">
+            <input type="text" name="nombre" placeholder="Buscar receta..."
+                   class="px-4 py-2 rounded-l-md bg-white border border-gray-300 focus:ring focus:ring-yellow-500">
+            <button type="submit" class="px-4 py-2 bg-yellow-500 text-white rounded-r-md hover:bg-yellow-600">
+                Buscar
+            </button>
+        </form>
         <ul class="flex space-x-6">
             <li><a href="/recetas/" class="text-white hover:text-amber-400">Inicio</a></li>
             <li><a href="/recetas/list" class="text-white hover:text-yellow-300">Ver recetas</a></li>

@@ -13,8 +13,18 @@
 <nav class="bg-slate-900 fixed w-full z-10">
     <div class="container mx-auto flex justify-between items-center py-4 px-4">
         <div>
-            <span class="text-amber-200 text-lg font-bold">KWA!</span>
+            <a href="/recetas/"><span class="text-amber-200 text-lg font-bold">KWA!</span></a>
+
+
+            <!-- Barra de búsqueda -->
         </div>
+            <form action="/recetas/buscar" method="get" class="flex items-center">
+                <input type="text" name="nombre" placeholder="Buscar receta..."
+                       class="px-4 py-2 rounded-l-md bg-white border border-gray-300 focus:ring focus:ring-yellow-500">
+                <button type="submit" class="px-4 py-2 bg-yellow-500 text-white rounded-r-md hover:bg-yellow-600">
+                    Buscar
+                </button>
+            </form>
         <ul class="flex space-x-6">
             <li><a href="/recetas/list" class="text-white hover:text-yellow-300">Ver recetas</a></li>
             <li><a href="/recetas/about" class="text-white hover:text-yellow-300">Acerca de</a></li>
@@ -46,8 +56,10 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <!-- Iterar sobre la lista de recetas usando Thymeleaf -->
             <div class="bg-orange-200 rounded-lg shadow-lg overflow-hidden" th:each="receta : ${recipes}">
-                <!-- Enlace a la imagen de la receta -->
-                <img th:src="@{/pic/{id}.jpg(id=${receta.foto})}" class="w-full h-48 object-cover" alt="Imagen de la receta">
+                <!-- Enlace que lleva al detalle de la receta -->
+                <a th:href="@{'/recetas/detalle/' + ${receta.id}}">
+                    <img th:src="@{/pic/{id}.jpg(id=${receta.foto})}" class="w-full h-48 object-cover" alt="Imagen de la receta">
+                </a>
                 <div class="p-4 flex justify-between">
                     <h2 class="text-lg font-bold mb-2 items-center" th:text="${receta.nombre}"></h2>
                     <div>

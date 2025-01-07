@@ -1,6 +1,9 @@
 package net.osgg.crudthymeleaf.controller;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import net.osgg.crudthymeleaf.entities.Receta;
 import net.osgg.crudthymeleaf.repository.RecetaRepo;
 import net.osgg.crudthymeleaf.service.PictureService;
+
+
 
 @Controller
 @RequestMapping("/recetas")
@@ -68,7 +73,8 @@ public class RecetaControlador {
 					receta.get().getDificultad(),
 					receta.get().getAutor(),
 					receta.get().getTelefono(),
-					receta.get().getCorreo()
+					receta.get().getCorreo(),
+					receta.get().getIngredientes()
 			);
 
 			return ResponseEntity.ok(recetaDetalles);
@@ -77,6 +83,90 @@ public class RecetaControlador {
 		}
 	}
 
+	@GetMapping("/detalle/{id}")
+	public String verDetalleReceta(@PathVariable("id") Long id, Model model) {
+		// Buscar la receta por ID
+		Receta receta = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Receta no encontrada: " + id));
+
+		// Verificar si la receta tiene una foto asociada
+		if (receta.getFoto() == null) {
+			receta.setFoto(UUID.randomUUID()); // Esto asegura que siempre habrá un ID válido (puedes reemplazar con un placeholder).
+		}
+
+		// Agregar la receta al modelo
+		model.addAttribute("receta", receta);
+
+		// Retornar la vista para los detalles
+		return "detalle_receta";
+	}
+
+
+
+//	@Autowired
+//	private RecetaService recetaService;
+
+//	@GetMapping("/list")
+//	public String listarRecetas(
+//			@RequestParam(required = false) String search,
+//			@RequestParam(required = false) String difficulty,
+//			@RequestParam(required = false) String sort,
+//			Model model) {
+//
+//		// Obtener todas las recetas
+//		List<Receta> recetas = (List<Receta>) repo.findAll();
+//
+//		// Filtrar por búsqueda
+//		if (search != null && !search.isEmpty()) {
+//			recetas = recetas.stream()
+//					.filter(r -> r.getNombre().toLowerCase().contains(search.toLowerCase()))
+//					.collect(Collectors.toList());
+//		}
+//
+//		// Filtrar por dificultad
+//		if (difficulty != null && !difficulty.isEmpty()) {
+//			recetas = recetas.stream()
+//					.filter(r -> r.getDificultad().equalsIgnoreCase(difficulty))
+//					.collect(Collectors.toList());
+//		}
+//
+//		// Ordenar
+//		if (sort != null && !sort.isEmpty()) {
+//			switch (sort) {
+//				case "nombre":
+//					recetas.sort(Comparator.comparing(Receta::getNombre));
+//					break;
+//				case "autor":
+//					recetas.sort(Comparator.comparing(Receta::getAutor));
+//					break;
+//				case "correo":
+//					recetas.sort(Comparator.comparing(Receta::getCorreo));
+//					break;
+//				default:
+//					break;
+//			}
+//		}
+//
+//		// Agregar recetas filtradas al modelo
+//		model.addAttribute("recipes", recetas);
+//		return "list_recipes";
+//	}
+
+
+	@GetMapping("/buscar")
+	public String buscarRecetas(@RequestParam("nombre") String nombre, Model model) {
+//		// Buscar recetas por nombre usando el repositorio
+//		List<Receta> recetasEncontradas = repo.findByNombre(nombre);
+
+		// Buscar recetas ignorando mayúsculas y tildes
+		List<Receta> recetasEncontradas = repo.buscarPorNombreIgnorandoCasingYTildes(nombre);
+
+
+		// Agregar las recetas encontradas al modelo
+		model.addAttribute("recipes", recetasEncontradas);
+
+		// Retornar una nueva vista con los resultados
+		return "resultados_busqueda"; // Nombre de la plantilla nueva (resultados_busqueda.html)
+	}
 
 	@RequestMapping("/login")
 	 public String showLogin() {

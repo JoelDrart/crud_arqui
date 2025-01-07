@@ -19,12 +19,22 @@ public class Receta {
     
     private String nombre;
     private UUID foto;
+
+    @Column(columnDefinition = "TEXT")
     private String preparacion;
+
+    @Column(columnDefinition = "TEXT")
+    private String ingredientes;
+
     private String dificultad;
+
     
     private String autor; // Nuevo campo
     private String telefono; // Nuevo campo
     private String correo; // Nuevo campo
+
+    @Column(length = 500)
+    private String enlace;
     
     // Getters y Setters
     public Long getId() {
@@ -90,5 +100,21 @@ public class Receta {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public String getIngredientes() {
+        return ingredientes;
+    }
+
+    public void setIngredientes(String ingredientes) {
+        this.ingredientes = ingredientes;
+    }
+
+    public String getEnlace() {
+        return enlace;
+    }
+
+    public void setEnlace(String enlace) {
+        this.enlace = enlace;
     }
 }

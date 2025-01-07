@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Detalles de la Receta</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="bg-slate-900 fixed w-full z-10">
+    <div class="container mx-auto flex justify-between items-center py-4 px-4">
+        <div>
+            <a href="/recetas/"><span class="text-amber-200 text-lg font-bold">KWA!</span></a>
+        </div>
+        <form action="/recetas/buscar" method="get" class="flex items-center">
+            <input type="text" name="nombre" placeholder="Buscar receta..."
+                   class="px-4 py-2 rounded-l-md bg-white border border-gray-300 focus:ring focus:ring-yellow-500">
+            <button type="submit" class="px-4 py-2 bg-yellow-500 text-white rounded-r-md hover:bg-yellow-600">
+                Buscar
+            </button>
+        </form>
+        <ul class="flex space-x-6">
+            <li><a href="/recetas/" class="text-white hover:text-amber-400">Inicio</a></li>
+            <li><a href="/recetas/list" class="text-white hover:text-yellow-300">Ver recetas</a></li>
+            <li><a href="/recetas/about" class="text-white hover:text-yellow-300">Acerca de</a></li>
+            <li th:unless="${#authorization.expression('isAuthenticated()')}">
+                <a href="/recetas/login" class="text-white hover:text-yellow-300">Iniciar sesión</a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a href="/recetas/logout" class="text-white hover:text-yellow-300">Cerrar sesión</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<!-- Fin Navbar-->
+
+<main class="bg-black bg-opacity-75 min-h-screen pt-24 overflow-y-scroll">
+    <div class="container mx-auto my-4 text-white">
+        <!-- Título -->
+        <div class="flex items-center justify-center gap-6">
+            <!-- Título -->
+            <h1 class="text-5xl font-bold text-amber-200 text-center" th:text="${receta.nombre}"></h1>
+
+            <!-- Dificultad -->
+            <span th:text="${receta.dificultad}"
+                  class="text-white font-bold rounded p-2 flex items-center justify-center"
+                  th:classappend=" ' ' +
+            (${receta.dificultad} == 'Fácil' ? 'bg-green-500' :
+              (${receta.dificultad} == 'Moderado' ? 'bg-orange-500' :
+              (${receta.dificultad} == 'Difícil' ? 'bg-red-500' : 'bg-gray-500')))"
+            ></span>
+        </div>
+
+
+        <!-- Contenedor principal con flexbox -->
+        <div class="flex flex-wrap md:flex-nowrap gap-6 mt-6">
+
+            <!-- Imagen principal -->
+            <div class="w-full md:w-1/3 flex justify-center items-center">
+                <img th:src="@{/pic/{id}.jpg(id=${receta.foto})}"
+                     class="rounded-lg shadow-lg max-w-full h-auto"
+                     alt="Imagen de la receta"
+                     th:alt="'Imagen de ' + ${receta.nombre}">
+            </div>
+
+            <!-- Detalles de la receta -->
+            <div class="w-full md:w-2/3">
+
+
+                <!-- Ingredientes -->
+                <div class="">
+                    <h2 class="text-4xl font-bold text-amber-200 mb-4">Ingredientes</h2>
+                    <p class="text-white text-base whitespace-pre-line" th:text="${receta.ingredientes}"></p>
+                </div>
+
+                <!-- Preparación -->
+                <div class="mt-6">
+                    <h2 class="text-4xl font-bold text-amber-200 mb-4">Preparación</h2>
+                    <p class="text-white text-base whitespace-pre-line" th:text="${receta.preparacion}"></p>
+                </div>
+
+                <div class="text-md space-y-4 mt-6">
+                    <p><span class="font-bold text-amber-200">Autor:</span> <span th:text="${receta.autor}"></span></p>
+                    <p><span class="font-bold text-amber-200">Correo:</span> <span th:text="${receta.correo}"></span></p>
+                    <p><span class="font-bold text-amber-200">Teléfono:</span> <span th:text="${receta.telefono}"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

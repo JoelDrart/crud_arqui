@@ -11,10 +11,11 @@ public class RecetaDetallesDTO {
     private String autor;
     private String telefono;
     private String correo;
+    private String ingredientes;
 
     // Constructor
     public RecetaDetallesDTO(Long id, String nombre, String foto, String preparacion,
-                             String dificultad, String autor, String telefono, String correo) {
+                             String dificultad, String autor, String telefono, String correo, String ingredientes) {
         this.id = id;
         this.nombre = nombre;
         this.foto = foto;
@@ -23,6 +24,7 @@ public class RecetaDetallesDTO {
         this.autor = autor;
         this.telefono = telefono;
         this.correo = correo;
+        this.ingredientes = ingredientes;
     }
 
     // Getters y Setters
@@ -88,5 +90,13 @@ public class RecetaDetallesDTO {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public String getIngredientes() {
+        return ingredientes;
+    }
+
+    public void setIngredientes(String ingredientes) {
+        this.ingredientes = ingredientes;
     }
 }
