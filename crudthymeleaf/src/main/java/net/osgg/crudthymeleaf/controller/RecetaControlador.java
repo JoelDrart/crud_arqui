@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import net.osgg.crudthymeleaf.entities.Categoria;
+import net.osgg.crudthymeleaf.repository.CategoriaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,9 @@ public class RecetaControlador {
 	 
 	 @Autowired
 	    PictureService picService;
+
+	@Autowired
+	private CategoriaRepo categoriaRepo;
 	 
 	 
 	 @RequestMapping("")
@@ -45,7 +50,10 @@ public class RecetaControlador {
 	}
 	 
 	 @GetMapping("/add_recipe")
-	 public String showSignUpForm(Receta receta) {
+	 public String showSignUpForm(Receta receta, Model model) {
+		 List<Categoria> categorias = categoriaRepo.findAll();
+		 model.addAttribute("categorias", categorias);
+		 model.addAttribute("receta", new Receta());
 	     return "add_recipe";
 	 }
  
@@ -74,7 +82,9 @@ public class RecetaControlador {
 					receta.get().getAutor(),
 					receta.get().getTelefono(),
 					receta.get().getCorreo(),
-					receta.get().getIngredientes()
+					receta.get().getIngredientes(),
+					receta.get().getEnlace(),
+					receta.get().getIdVideo()
 			);
 
 			return ResponseEntity.ok(recetaDetalles);
@@ -201,30 +211,48 @@ public class RecetaControlador {
 	 @PreAuthorize("hasAuthority('admin')")
 	 @GetMapping("/edit/{id}")
 	 public String showUpdateForm(@PathVariable("id") Long id, Model model) {
-	     Receta receta = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid recipe Id:" + id));
-	     model.addAttribute("recipe", receta);
+		 Receta receta = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid recipe Id:" + id));
+		 List<Categoria> categorias = categoriaRepo.findAll();
+		 model.addAttribute("recipe", receta);
+		 model.addAttribute("categoriasX", categorias);
 	     return "update_recipe";
 	 }
-	 
-	 @PreAuthorize("hasAuthority('admin')")
-	 @PostMapping("/update/{id}")
-	 public String updateRecipe(@PathVariable("id") Long id, Receta receta, BindingResult result, Model model, @RequestParam("file") MultipartFile file) {
-	     if (result.hasErrors()) {
-	          receta.setId(id);
-	          return "update_recipe";
-	     }
-	     
-	     if (!file.isEmpty()) {
-	    	 picService.deletePicture(receta.getFoto());
-		     UUID idPic = UUID.randomUUID();
-		     picService.uploadPicture(file, idPic);
-		     receta.setFoto(idPic);
-	     }
-	     repo.save(receta);
-	     return "redirect:/recetas/list";
-	 }
+	@PreAuthorize("hasAuthority('admin')")
+	@PostMapping("/update/{id}")
+	public String updateRecipe(@PathVariable("id") Long id, Receta receta, BindingResult result, Model model, @RequestParam("file") MultipartFile file) {
+		if (result.hasErrors()) {
+			receta.setId(id);
 
-	 @PreAuthorize("hasAuthority('admin')")
+			// Inicializar la categoría si es nula
+			if (receta.getCategoria() == null || receta.getCategoria().getId() == null) {
+				receta.setCategoria(new Categoria());
+			}
+
+			// Cargar categorías para el desplegable
+			List<Categoria> categorias = categoriaRepo.findAll();
+			model.addAttribute("categorias", categorias);
+
+			return "update_recipe";
+		}
+
+		if (!file.isEmpty()) {
+			picService.deletePicture(receta.getFoto());
+			UUID idPic = UUID.randomUUID();
+			picService.uploadPicture(file, idPic);
+			receta.setFoto(idPic);
+		}
+
+		// Validar y guardar la categoría seleccionada
+		Categoria categoria = categoriaRepo.findById(receta.getCategoria().getId())
+				.orElseThrow(() -> new IllegalArgumentException("Invalid category Id:" + receta.getCategoria().getId()));
+		receta.setCategoria(categoria);
+
+		repo.save(receta);
+		return "redirect:/recetas/list";
+	}
+
+
+	@PreAuthorize("hasAuthority('admin')")
 	 @GetMapping("/delete/{id}")
 	 public String deleteRecipe(@PathVariable("id") Long id, Model model) {
 	     Receta receta = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid recipe Id:" + id));

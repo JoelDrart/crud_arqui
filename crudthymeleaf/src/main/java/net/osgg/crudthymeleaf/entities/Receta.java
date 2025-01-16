@@ -2,12 +2,7 @@ package net.osgg.crudthymeleaf.entities;
 
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity
@@ -35,7 +30,15 @@ public class Receta {
 
     @Column(length = 500)
     private String enlace;
-    
+
+    @Column(length = 500)
+    private String idVideo;
+
+    @ManyToOne
+    private Categoria categoria;
+
+
+
     // Getters y Setters
     public Long getId() {
         return id;
@@ -116,5 +119,21 @@ public class Receta {
 
     public void setEnlace(String enlace) {
         this.enlace = enlace;
+    }
+
+    public String getIdVideo() {
+        return idVideo;
+    }
+
+    public void setIdVideo(String idVideo) {
+        this.idVideo = idVideo;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 }

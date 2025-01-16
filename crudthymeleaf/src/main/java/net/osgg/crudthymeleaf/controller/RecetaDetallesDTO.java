@@ -12,10 +12,13 @@ public class RecetaDetallesDTO {
     private String telefono;
     private String correo;
     private String ingredientes;
+    private String enlace;
+    private String idVideo;
 
     // Constructor
     public RecetaDetallesDTO(Long id, String nombre, String foto, String preparacion,
-                             String dificultad, String autor, String telefono, String correo, String ingredientes) {
+                             String dificultad, String autor, String telefono, String correo, String ingredientes,
+                             String enlace, String idVideo) {
         this.id = id;
         this.nombre = nombre;
         this.foto = foto;
@@ -25,6 +28,8 @@ public class RecetaDetallesDTO {
         this.telefono = telefono;
         this.correo = correo;
         this.ingredientes = ingredientes;
+        this.enlace = enlace;
+        this.idVideo = idVideo;
     }
 
     // Getters y Setters
@@ -98,5 +103,21 @@ public class RecetaDetallesDTO {
 
     public void setIngredientes(String ingredientes) {
         this.ingredientes = ingredientes;
+    }
+
+    public String getEnlace() {
+        return enlace;
+    }
+
+    public void setEnlace(String enlace) {
+        this.enlace = enlace;
+    }
+
+    public String getIdVideo() {
+        return idVideo;
+    }
+
+    public void setIdVideo(String idVideo) {
+        this.idVideo = idVideo;
     }
 }

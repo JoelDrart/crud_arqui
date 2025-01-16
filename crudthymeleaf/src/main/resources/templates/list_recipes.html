@@ -69,7 +69,16 @@
 						</thead>
 						<tbody>
 						<tr th:each="receta : ${recipes}" class="odd:bg-gray-100/50 even:bg-gray-100/25">
-							<td th:text="${receta.nombre}" class="py-2 px-4"></td>
+							<td class="py-2 px-4">
+								<a
+									th:href="@{/recetas/detalle/{id}(id=${receta.id})}"
+									class="text-blue-800 hover:underline"
+
+								>
+									<span th:text="${receta.nombre}"></span>
+									<i class="fas fa-external-link-alt"></i>
+								</a>
+							</td>
 							<td th:text="${receta.autor}" class="py-2 px-4"></td>
 							<td th:text="${receta.telefono}" class="py-2 px-4"></td>
 							<td th:text="${receta.correo}" class="py-2 px-4"></td>
@@ -165,7 +174,7 @@
 												.then(data => {
 													const detalleReceta = document.getElementById('detalle-receta');
 													detalleReceta.innerHTML = `
-        <h4 class="font-bold">${data.nombre}</h4>
+        <a href="/recetas/detalle/${idReceta}"><h4 class="font-bold mb-2">${data.nombre}</h4></a>
         <img src="/pic/${data.foto}.jpg" alt="Imagen de la receta" class="w-full rounded mb-4">
         <p><strong>Dificultad:</strong> ${data.dificultad}</p>
         <p><strong>Autor:</strong> ${data.autor}</p>

@@ -58,7 +58,12 @@
             <div class="bg-orange-200 rounded-lg shadow-lg overflow-hidden" th:each="receta : ${recipes}">
                 <!-- Enlace que lleva al detalle de la receta -->
                 <a th:href="@{'/recetas/detalle/' + ${receta.id}}">
-                    <img th:src="@{/pic/{id}.jpg(id=${receta.foto})}" class="w-full h-48 object-cover" alt="Imagen de la receta">
+                    <img
+                            th:src="@{/pic/{id}.jpg(id=${receta.foto})}"
+                            class="w-full h-48 object-cover hover:opacity-75 transition-transform duration-300 transform hover:scale-105 hover:brightness-75"
+                            alt="Imagen de la receta"
+                    >
+
                 </a>
                 <div class="p-4 flex justify-between">
                     <h2 class="text-lg font-bold mb-2 items-center" th:text="${receta.nombre}"></h2>
@@ -76,7 +81,9 @@
             </div>
         </div>
     </div>
+<!--<iframe width="100%" height="100%" frameborder="0" src="https://stem.ubidots.com/app/dashboards/public/dashboard/xN45RW_Qjfs3b5EOJ-rQ7TZkoA4yV95LKyLGGjy-86M?navbar=true&contextbar=true&datePicker=true&devicePicker=true&displayTitle=true"></iframe>-->
 </main>
+
 
 </body>
 </html>

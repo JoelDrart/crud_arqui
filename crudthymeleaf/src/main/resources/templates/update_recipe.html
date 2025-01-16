@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title>Psytrance Recipes!</title>
+	<title>KWA!</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="https://cdn.tailwindcss.com"></script>
 	<link rel="stylesheet" type="text/css" href="/css/main.css">
@@ -60,9 +60,27 @@
 		<div class="bg-white shadow rounded-lg p-6">
 			<form action="#" th:action="@{/recetas/update/{id}(id=${recipe.id})}" th:object="${recipe}" method="post" enctype="multipart/form-data">
 				<div class="grid grid-cols-1 gap-6">
-					<div>
-						<label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
-						<input type="text" th:field="*{nombre}" id="nombre" class="mt-1 py-2 pl-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Nombre">
+					<div class="flex gap-4">
+						<!-- Campo Nombre -->
+						<div class="flex-[3]">
+							<label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+							<input type="text" th:field="*{nombre}" id="nombre"
+								   class="mt-1 py-2 pl-1 block w-full rounded-md border-gray-300 shadow-md
+                      focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+								   placeholder="Nombre">
+						</div>
+
+						<!-- Campo Categoría -->
+						<div class="flex-[1]">
+							<label for="categoria" class="block text-sm font-medium text-gray-700">Categoría</label>
+							<select id="categoria" th:field="*{categoria}"
+									class="mt-1 py-2 pl-1 block w-full rounded-md border-gray-300 shadow-md
+                       focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+								<option value="" disabled selected>Seleccione una categoría</option>
+								<option th:each="categoriaX : ${categoriasX}"
+										th:value="${categoria}" th:text="${categoriaX.nombre}"></option>
+							</select>
+						</div>
 					</div>
 					<div>
 						<label for="autor" class="block text-sm font-medium text-gray-700">Autor</label>
@@ -112,6 +130,16 @@
 							</label>
 						</div>
 					</div>
+
+					<div>
+						<label for="enlace" class="block text-sm font-medium text-gray-700">Enlace de Video de Youtube</label>
+						<input type="text" id="enlace" th:field="*{enlace}" class="mt-1 py-2 pl-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="https://www.youtube.com/watch...w" oninput="extractVideoId()">
+					</div>
+
+					<div>
+						<input type="hidden" id="videoId" th:field="*{idVideo}">
+					</div>
+
 					<div>
 						<button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Guardar receta</button>
 					</div>
@@ -122,6 +150,41 @@
 
 
 </main>
+
+<script>
+	function extractVideoId() {
+		const enlaceInput = document.getElementById('enlace');
+		const videoIdInput = document.getElementById('videoId');
+		const url = enlaceInput.value.trim();
+
+		// Expresión regular para validar URLs de YouTube
+		const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+
+		if (!youtubeRegex.test(url)) {
+			alert('Por favor, ingrese un enlace válido de YouTube.');
+			videoIdInput.value = '';
+			return;
+		}
+
+		// Extraer el ID del video de YouTube
+		let videoId = null;
+
+		if (url.includes('v=')) {
+			videoId = url.split('v=')[1]?.split('&')[0];
+		} else if (url.includes('youtu.be/')) {
+			videoId = url.split('youtu.be/')[1]?.split('?')[0];
+		}
+
+		if (!videoId) {
+			alert('No se pudo extraer un ID de video válido del enlace proporcionado.');
+			videoIdInput.value = '';
+		} else {
+			console.log(videoId);
+			videoIdInput.value = videoId;
+		}
+	}
+
+</script>
 
 </body>
 
