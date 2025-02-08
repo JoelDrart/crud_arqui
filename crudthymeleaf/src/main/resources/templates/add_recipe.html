@@ -62,14 +62,8 @@
 
                         <!-- Campo Categoría -->
                         <div class="flex-[1]">
-                            <label for="categoria" class="block text-sm font-medium text-gray-700">Categoría</label>
-                            <select id="categoria" th:field="*{categoria}"
-                                    class="mt-1 py-2 pl-1 block w-full rounded-md border-gray-300 shadow-md
-                       focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                <option value="" disabled selected>Seleccione una categoría</option>
-                                <option th:each="categoria : ${categorias}"
-                                        th:value="${categoria}" th:text="${categoria.nombre}"></option>
-                            </select>
+                            <label class="block text-sm font-medium text-gray-700">Categoría</label>
+
                         </div>
                     </div>
 

@@ -34,9 +34,6 @@ public class Receta {
     @Column(length = 500)
     private String idVideo;
 
-    @ManyToOne
-    private Categoria categoria;
-
 
 
     // Getters y Setters
@@ -129,11 +126,4 @@ public class Receta {
         this.idVideo = idVideo;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-    }
 }
